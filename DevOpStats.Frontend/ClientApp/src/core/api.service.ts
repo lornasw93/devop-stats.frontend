@@ -26,19 +26,16 @@ export class ApiService extends BaseApiService<object> {
   getRepos(project) {
     return this.getAll(`repos/repos?project=${project}`);
   }
+   
 
-  getSprints(project, team) {
-    return this.getCount(`boards/sprint/${project}/${team}`);
+  getSprintsCount(project, team) {
+    return this.getCount(`boards/sprint/pastSprintCount?project=${project}&team=${team}`);
   }
 
   getCurrentSprint(project, team) {
-    return this.get(`boards/sprint/currentSprint?project=${project}&team=${team}`);
+    return this.getAll(`boards/sprint/currentSprint?project=${project}&team=${team}`);
   }
-
-  getSprintWorkItems(project, team, iteration) {
-    return this.get(`boards/sprint/${project}/${team}/${iteration}`);
-  }
-
+   
   getPullRequestVotes(project, repo) {
     return this.getAll(`projects/PullRequestByVote?project=${project}&repositoryId=${repo}`);
   }

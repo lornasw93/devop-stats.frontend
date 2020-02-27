@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Location, DatePipe } from '@angular/common';
-import { Project } from "../../../core/basic.model";
+import { Project, Sprint } from "../../../core/basic.model";
 import { ApiService } from "../../../core/api.service";
 
 @Component({
@@ -12,6 +12,8 @@ import { ApiService } from "../../../core/api.service";
 })
 export class ProjectComponent implements OnInit {
   projectId: string;
+  defaultTeamId: string;
+
   repos: any[];
   project: Project;
   pastSprintsCount: number;
@@ -21,34 +23,37 @@ export class ProjectComponent implements OnInit {
   faSpinner = faSpinner;
   areReposLoading = true;
 
+  workItems: any;
+
   constructor(private activatedRoute: ActivatedRoute,
     private service: ApiService,
     private location: Location,
     private datePipe: DatePipe) {
     this.projectId = this.activatedRoute.snapshot.params.projectId;
+    this.defaultTeamId = this.activatedRoute.snapshot.params.teamId;
   }
 
   ngOnInit() {
-    this.service.getRepos(this.projectId).subscribe((data: any) => {
-      this.repos = data.result.value;
-    }).add(() => { this.areReposLoading = false; });
-
     this.service.getProject(this.projectId).subscribe((data: any) => {
       this.project = data.result;
-
-
+    });
+     
+    this.service.getSprintsCount(this.projectId, this.defaultTeamId).subscribe((data: number) => {
+      this.pastSprintsCount = data;
     });
 
-    this.service.getSprints(this.projectId, this.project.defaultTeam.id).subscribe((data: any) => {
-      this.pastSprintsCount = data.result.count;
+    this.service.getCurrentSprint(this.projectId, this.defaultTeamId).subscribe((data: any) => {
+      this.currentSprint = data;
     });
 
-    this.service.getCurrentSprint(this.projectId, this.project.defaultTeam.id).subscribe((data: any) => {
-      this.currentSprint = data.result;
-    });
+    this.service.getRepos(this.projectId).subscribe((data: any) => {
+      this.repos = data.result.value;
 
+
+    }).add(() => { this.areReposLoading = false; });
+ 
   }
-
+    
   goBack() {
     this.location.back();
   }

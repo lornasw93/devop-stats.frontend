@@ -35,10 +35,10 @@ export class DeploymentsComponent implements OnInit {
 
   constructor(private readonly releasesService: ApiService,
     private datePipe: DatePipe,
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private location: Location) {
     this.rowSelection = "single";
-    this.projectId = this.route.snapshot.params['projectId'];
+    this.projectId = this.activatedRoute.snapshot.params.projectId;
   }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class DeploymentsComponent implements OnInit {
   }
 
   setData() {
-    this.releasesService.getReleases('fpmcore').subscribe((data: any) => {
+    this.releasesService.getReleases(this.projectId).subscribe((data: any) => {
       this.rowData = data.result.value;
     });
 
@@ -58,7 +58,7 @@ export class DeploymentsComponent implements OnInit {
     //  this.count = data.result.count;
     //});
 
-    this.releasesService.getReleasesByMonthChart('fpmcore').subscribe((data: any) => {
+    this.releasesService.getReleasesByMonthChart(this.projectId).subscribe((data: any) => {
       this.seriesByMonth = [data];
     });
   }
@@ -73,7 +73,7 @@ export class DeploymentsComponent implements OnInit {
     { headerName: 'Id', field: 'id' },
     { headerName: 'Name', field: 'name' },
     {
-      headerName: 'Status', field: 'status',
+      headerName: 'Status', field: '',
       //cellStyle(params) {
       //  if (params.value === 'succeeded') {
       //    return { color: 'white', backgroundColor: 'green' };
@@ -92,8 +92,8 @@ export class DeploymentsComponent implements OnInit {
         return data.value ? this.datePipe.transform(data.value, 'dd/MM/yy HH:mm') : data.value;
       }
     },
-    { headerName: 'Variables', field: 'variables' },
-    { headerName: 'Environments', field: 'environments' },
+    //{ headerName: 'Variables', field: 'variables' },
+    //{ headerName: 'Environments', field: 'environments' },
     {
       headerName: 'Url', field: 'url',
       cellRenderer(params) {

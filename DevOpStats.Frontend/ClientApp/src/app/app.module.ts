@@ -23,7 +23,7 @@ import { DeploymentsComponent } from "./modules/deployments/deployments.componen
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'project/:projectId', component: ProjectComponent },
+  { path: 'project/:projectId/:teamId', component: ProjectComponent },
   { path: '', redirectTo: '/', pathMatch: 'full' },
   { path: 'builds/:projectId', component: BuildsComponent },
   { path: 'releases/:projectId', component: DeploymentsComponent },

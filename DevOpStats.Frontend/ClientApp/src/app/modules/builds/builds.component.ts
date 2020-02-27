@@ -35,13 +35,13 @@ export class BuildsComponent implements OnInit {
   private gridColumnApi;
   private rowSelection;
 
-  constructor(private readonly service: ApiService,
-    private datePipe: DatePipe,
-    private route: ActivatedRoute,
+  constructor(private activatedRoute: ActivatedRoute,
+    private readonly service: ApiService,
+    private datePipe: DatePipe, 
     private location: Location) {
 
     this.rowSelection = "single";
-    this.projectId = this.route.snapshot.params['projectId'];
+    this.projectId = this.activatedRoute.snapshot.params.projectId;
   }
 
   ngOnInit() {
@@ -52,20 +52,20 @@ export class BuildsComponent implements OnInit {
     this.location.back();
   }
 
-  setData() { 
-    this.service.getBuilds('fpmcore').subscribe((data: any) => {
+  setData() {
+    this.service.getBuilds(this.projectId).subscribe((data: any) => {
       this.rowData = data.result.value;
     });
      
-    this.service.getBuildsByMonthChart('fpmcore').subscribe((data: any) => {
+    this.service.getBuildsByMonthChart(this.projectId).subscribe((data: any) => {
       this.seriesByMonth = [data];
     });
 
-    this.service.getBuildsByRequestChart('fpmcore').subscribe((data: any) => {
+    this.service.getBuildsByRequestChart(this.projectId).subscribe((data: any) => {
       this.seriesByRequest = [data];
     });
 
-    this.service.getBuildsByResultChart('fpmcore').subscribe((data: any) => {
+    this.service.getBuildsByResultChart(this.projectId).subscribe((data: any) => {
       this.seriesByResult = [data];
     });
   }
