@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WikiComponent } from './wiki.component';
+import { DeploymentsComponent } from './deployments.component';
 
-describe('WikiComponent', () => {
-  let component: WikiComponent;
-  let fixture: ComponentFixture<WikiComponent>;
+describe('DeploymentsComponent', () => {
+  let component: DeploymentsComponent;
+  let fixture: ComponentFixture<DeploymentsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WikiComponent ]
+      declarations: [DeploymentsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WikiComponent);
+    fixture = TestBed.createComponent(DeploymentsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,9 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Project } from "../../../core/models/project.model";
-import { BuildsService } from "../../../core/services/pipelines/builds/builds.service";
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { ApiService } from "../../../core/api.service";
 
 @Component({
   selector: 'app-builds',
@@ -11,7 +10,6 @@ import { Location } from '@angular/common';
   styleUrls: ['./builds.component.css']
 })
 export class BuildsComponent implements OnInit {
-  //@Input() project: Project;
   seriesByMonth: any[];
   seriesByResult: any[];
   seriesByRequest: any[];
@@ -35,14 +33,14 @@ export class BuildsComponent implements OnInit {
 
   private gridApi;
   private gridColumnApi;
-  //private rowSelection;
+  private rowSelection;
 
-  constructor(private readonly buildsService: BuildsService,
+  constructor(private readonly service: ApiService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     private location: Location) {
 
-    //this.rowSelection = "single";
+    this.rowSelection = "single";
     this.projectId = this.route.snapshot.params['projectId'];
   }
 
@@ -54,24 +52,20 @@ export class BuildsComponent implements OnInit {
     this.location.back();
   }
 
-  setData() {
-    this.buildsService.getBuilds('fpmcore').subscribe((data: any) => {
+  setData() { 
+    this.service.getBuilds('fpmcore').subscribe((data: any) => {
       this.rowData = data.result.value;
     });
-
-    //this.buildsService.getBuildsCount('fpmcore').subscribe((data: any) => {
-    //  this.count = data.result.count;
-    //});
-
-    this.buildsService.getBuildsByMonthChart('fpmcore').subscribe((data: any) => {
+     
+    this.service.getBuildsByMonthChart('fpmcore').subscribe((data: any) => {
       this.seriesByMonth = [data];
     });
 
-    this.buildsService.getBuildsByRequestChart('fpmcore').subscribe((data: any) => {
+    this.service.getBuildsByRequestChart('fpmcore').subscribe((data: any) => {
       this.seriesByRequest = [data];
     });
 
-    this.buildsService.getBuildsByResultChart('fpmcore').subscribe((data: any) => {
+    this.service.getBuildsByResultChart('fpmcore').subscribe((data: any) => {
       this.seriesByResult = [data];
     });
   }

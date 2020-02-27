@@ -27,7 +27,7 @@
 
 
             <h2 class="card-title text-center">
-              {{project.name}}
+              {{project.name}}{{project.id}}
 
               <a [routerLink]="['/project/', project.id]" routerLinkActive="active">
                 <fa-icon [icon]="faEllipsisH"></fa-icon>
@@ -124,13 +124,10 @@
                     <i class="fab icon text-white my-4 display-4"></i>
                     Pull Requests
 
-                    <a [routerLink]="['/pull-requests/', project.id]" routerLinkActive="active">
+                    <a [routerLink]="['/pullrequests/', project.id, project.defaultTeam.id]" routerLinkActive="active">
                       <fa-icon [icon]="faEllipsisH"></fa-icon>
                     </a>
-
-                    <!--{{
-                    getA(project.id, project.defaultTeam.id)
-                    }}-->
+ 
                   </div>
                   <div class="card-body row text-center">
                     <div class="col">

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from "../../../core/services/project/project.service";
 import { faSpinner, faEllipsisH, faChartBar } from '@fortawesome/free-solid-svg-icons';
-import { Project } from "../../../core/models/project.model";
+import { Project } from "../../../core/basic.model";
+import { ApiService } from "../../../core/api.service";
 
 @Component({
   selector: 'app-home',
@@ -16,14 +16,14 @@ export class HomeComponent implements OnInit {
   faSpinner = faSpinner;
   faEllipsisH = faEllipsisH;
   faChartBar = faChartBar;
-
-  constructor(private readonly projectService: ProjectService) {
-  }
-
+   
   areProjectsLoading = true;
 
+  constructor(private readonly projectService: ApiService) {
+  }
+
   ngOnInit() {
-    this.projectService.getProjects().subscribe((data: any) => {
+    this.projectService.getProjects().subscribe((data: any[]) => {
       this.projects = data;
     }).add(() => { this.areProjectsLoading = false; });
   }
@@ -31,12 +31,10 @@ export class HomeComponent implements OnInit {
   getA(projectId, teamId) {
     this.projectService.getCurrentSprint(projectId, teamId).subscribe((data: any) => {
       this.currentSprint = data.result;
-      console.log(this.currentSprint)
+      console.log(this.currentSprint);
     });
   }
-
-
-
+   
   //onSelectionChanged() {
   //  const selectedRows = this.gridApi.getSelectedRows();
 

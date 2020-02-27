@@ -12,24 +12,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { HomeComponent } from "./modules/home/home.component";
 import { NavMenuComponent } from './modules/nav-menu/nav-menu.component';
-import { WikiComponent } from './modules/wiki/wiki.component';
 import { TestPlansComponent } from './modules/test-plans/test-plans.component';
 import { ProjectComponent } from "./modules/project/project.component";
-import { BuildsComponent } from "./modules/builds/builds.component";
-import { ReleasesComponent } from "./modules/releases/releases.component";
+import { BuildsComponent } from "./modules/builds/builds.component"; 
 import { PullRequestsComponent } from './modules/pull-requests/pull-requests.component';
 import { WorkItemsComponent } from './modules/work-items/work-items.component';
-import { CommitsComponent } from "./modules/commits/commits.component";
 import { SprintComponent } from "./modules/sprint/sprint.component";
 import { CountDescComponent } from './modules/count-desc/count-desc.component';
+import { DeploymentsComponent } from "./modules/deployments/deployments.component";
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'project/:id', component: ProjectComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', component: HomeComponent },
+  { path: 'project/:projectId', component: ProjectComponent },
+  { path: '', redirectTo: '/', pathMatch: 'full' },
   { path: 'builds/:projectId', component: BuildsComponent },
-  { path: 'releases/:projectId', component: ReleasesComponent },
-  { path: 'pullrequests/:projectId', component: PullRequestsComponent },
+  { path: 'releases/:projectId', component: DeploymentsComponent },
+  { path: 'pullrequests/:projectId/:teamId', component: PullRequestsComponent },
   //{ path: 'pipelines', loadChildren: () => import('./modules/pipelines/pipelines.module').then(m => m.PipelinesModule) },
 ];
 
@@ -38,13 +36,11 @@ const routes: Routes = [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    WikiComponent,
     TestPlansComponent,
     BuildsComponent,
-    ReleasesComponent,
+    DeploymentsComponent,
     ProjectComponent,
     PullRequestsComponent,
-    CommitsComponent,
     SprintComponent,
     WorkItemsComponent,
     CountDescComponent
