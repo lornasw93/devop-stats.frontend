@@ -1,0 +1,165 @@
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">
+
+      <fa-icon [icon]="faChartBar"></fa-icon>
+      DevOp Stats
+    </h1>
+    <p class="lead">
+      Providing useful stats by combining typical everyday queries using Azure DevOps REST API
+    </p>
+  </div>
+</div>
+<div *ngIf="areProjectsLoading; else loaded">
+  <p class="text-center">
+    <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+    Loading projects...
+  </p>
+</div>
+<ng-template #loaded>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4" *ngFor="let project of projects">
+        <div class="card">
+          <div class="card-body">
+
+
+
+
+            <h2 class="card-title text-center">
+              {{project.name}}
+
+              <a [routerLink]="['/project/', project.id]" routerLinkActive="active">
+                <fa-icon [icon]="faEllipsisH"></fa-icon>
+              </a>
+            </h2>
+
+
+
+
+
+
+            <p class="card-subtitle mb-2 text-muted">{{project.description}}</p>
+
+            <div *ngIf="project.buildCounts != null">
+              <div class="card-text">
+                <div class="card border-primary mb-3">
+                  <div class="card-header border-primary-bottom content-center">
+                    <i class="fab icon text-white my-4 display-4"></i>Builds
+
+                    <a [routerLink]="['/builds/', project.id]" routerLinkActive="active">
+                      <fa-icon [icon]="faEllipsisH"></fa-icon>
+                    </a>
+                  </div>
+                  <div class="card-body row text-center">
+                    <app-count-desc [count]="project.buildCounts.buildInProgressCount" [className]="{'in-progress': true}" description="in progress"></app-count-desc>
+                    <app-count-desc [count]="project.buildCounts.buildCancelledCount" [className]="{'not-active': true}" description="cancelled"></app-count-desc>
+                    <app-count-desc [count]="project.buildCounts.buildFailedCount" [className]="{'not-active': true}" description="failed"></app-count-desc>
+                    <app-count-desc [count]="project.buildCounts.buildSucceededCount" [className]="{'is-complete': true}" description="succeeded"></app-count-desc>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="project.deploymentCounts != null">
+              <div class="card-text">
+                <div class="card border-primary mb-3">
+                  <div class="card-header border-primary-bottom content-center">
+                    <i class="fab icon text-white my-4 display-4"></i>Releases
+
+                    <a [routerLink]="['/releases/', project.id]" routerLinkActive="active">
+                      <fa-icon [icon]="faEllipsisH"></fa-icon>
+                    </a>
+                  </div>
+                  <div class="card-body row text-center">
+                    <app-count-desc [count]="project.deploymentCounts.inProgressCount" [className]="{'in-progress': true}" description="in progress"></app-count-desc>
+                    <app-count-desc [count]="project.deploymentCounts.notDeployedCount" [className]="{'not-active': true}" description="not deployed"></app-count-desc>
+                    <app-count-desc [count]="project.deploymentCounts.failedCount" [className]="{'not-active': true}" description="failed"></app-count-desc>
+                    <app-count-desc [count]="project.deploymentCounts.succeededCount" [className]="{'is-complete': true}" description="succeeded"></app-count-desc>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="card border-primary mb-3">
+                <div class="card-header border-primary-bottom content-center">
+                  <i class="fab icon text-white my-4 display-4"></i>Test
+
+                  <a [routerLink]="['/releases/', project.id]" routerLinkActive="active">
+                    <fa-icon [icon]="faEllipsisH"></fa-icon>
+                  </a>
+                </div>
+                <div class="card-body row text-center">
+                  <app-count-desc [count]="project.testRunCount" [className]="" description="runs"></app-count-desc>
+                  <app-count-desc [count]="project.testPlanCount" [className]="" description="plans"></app-count-desc>
+                </div>
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="card border-primary mb-3">
+                <div class="card-header border-primary-bottom content-center">
+                  <i class="fab icon text-white my-4 display-4"></i>
+                  Repo
+
+                  <a [routerLink]="['/sprints/', project.id]" routerLinkActive="active">
+                    <fa-icon [icon]="faEllipsisH"></fa-icon>
+                  </a>
+                </div>
+                <div class="card-body row text-center">
+                  <div class="col">
+                    <div class="text-value-xl">{{project.repoCount}}</div>
+                    <div class="text-uppercase text-muted small">repos</div>
+                  </div>
+                  <div class="vr"></div>
+                  <div class="col">
+                    <div class="text-value-xl">{{project.teamCount}}</div>
+                    <div class="text-uppercase text-muted small">teams</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="project.pullRequestCounts != null">
+              <div class="card-text">
+                <div class="card border-primary mb-3">
+                  <div class="card-header border-primary-bottom content-center">
+                    <i class="fab icon text-white my-4 display-4"></i>
+                    Pull Requests
+
+                    <a [routerLink]="['/pull-requests/', project.id]" routerLinkActive="active">
+                      <fa-icon [icon]="faEllipsisH"></fa-icon>
+                    </a>
+
+                    <!--{{
+                    getA(project.id, project.defaultTeam.id)
+                    }}-->
+                  </div>
+                  <div class="card-body row text-center">
+                    <div class="col">
+                      <div class="text-value-xl">{{project.pullRequestCounts.noVote}}</div>
+                      <div class="text-uppercase text-muted small">no vote</div>
+                    </div>
+                    <div class="col">
+                      <div class="text-value-xl">{{project.pullRequestCounts.notSetCount}}</div>
+                      <div class="text-uppercase text-muted small">not set</div>
+                    </div>
+                    <div class="vr"></div>
+                    <div class="col" [ngClass]="{'in-progress': (project.pullRequestCounts.activeCount > 0)}">
+                      <div class="text-value-xl">{{project.pullRequestCounts.activeCount}}</div>
+                      <div class="text-uppercase text-muted small">active</div>
+                    </div>
+
+                    <app-count-desc [count]="project.pullRequestCounts.approved" [className]="" description="approved"></app-count-desc>
+                    <app-count-desc [count]="project.pullRequestCounts.approvedWithSuggestions" [className]="" description="approved w/s"></app-count-desc>
+                    <app-count-desc [count]="project.pullRequestCounts.waitingForAuthor" [className]="" description="waiting"></app-count-desc>
+                    <app-count-desc [count]="project.pullRequestCounts.rejected" [className]="{'not-active': true}" description="rejected"></app-count-desc>
+                    <app-count-desc [count]="project.pullRequestCounts.abandonedCount" [className]="{'not-active': true}" description="abandoned"></app-count-desc>
+                    <app-count-desc [count]="project.pullRequestCounts.completedCount" [className]="{'is-complete': true}" description="completed"></app-count-desc>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
